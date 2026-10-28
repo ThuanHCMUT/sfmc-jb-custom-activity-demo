@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notification Hub Custom Activity</title>
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+  <body>
+    <div id="dev-banner" class="dev-banner" hidden>Chế độ phát triển. Không dùng cho môi trường production.</div>
+    <a class="skip-link" href="#main">Chuyển đến nội dung chính</a>
+
+    <header class="app-header">
+      <div class="app-header__inner">
+        <p class="app-header__eyebrow">Salesforce Marketing Cloud</p>
+        <h1 class="app-header__title">Notification Hub Custom Activity</h1>
+      </div>
+    </header>
+
+    <div id="standalone-bar" class="standalone-bar" hidden>
+      <p class="standalone-bar__badge">Chế độ phát triển độc lập</p>
+      <p class="standalone-bar__hint">
+        Chế độ phát triển độc lập. Trường đầu vào lấy từ dữ liệu mẫu cục bộ (LOCAL_ORDER_ENTRY). Dữ liệu lưu được ghi log và lưu trong localStorage. Không có gì được gửi tới Journey Builder.
+      </p>
+      <div class="standalone-bar__actions">
+        <button type="button" id="standalone-next" class="button button--primary">Mô phỏng Tiếp theo</button>
+        <button type="button" id="standalone-back" class="button button--secondary">Mô phỏng Quay lại</button>
+        <button type="button" id="standalone-reset" class="button button--secondary">Đặt lại dữ liệu mẫu</button>
+      </div>
+      <pre id="standalone-output" class="standalone-bar__output" hidden></pre>
+    </div>
+
+    <main id="main" class="app-main">
+      <div id="activity-status" class="status-region" aria-live="polite" hidden></div>
+
+      <section class="card" aria-labelledby="template-selection-heading">
+        <header class="card__header">
+          <h2 id="template-selection-heading" class="card__title">Chọn mẫu</h2>
+        </header>
+
+        <div class="field">
+          <label for="channel-select" class="field__label">Kênh</label>
+          <select id="channel-select" class="field__control" aria-describedby="channel-hint">
+            <option value="">Chọn kênh</option>
+          </select>
+          <p id="channel-hint" class="card__hint">Chọn kênh thông báo trước. Chỉ các mẫu của kênh đó được hiển thị.</p>
+        </div>
+
+        <div class="field">
+          <label for="template-select" class="field__label">Mẫu</label>
+          <select id="template-select" class="field__control" disabled aria-describedby="template-status">
+            <option value="">Đang tải mẫu...</option>
+          </select>
+        </div>
+
+        <div id="template-status" class="status-region" aria-live="polite" hidden></div>
+      </section>
+
+      <section class="card" aria-labelledby="schema-heading">
+        <header class="card__header">
+          <h2 id="schema-heading" class="card__title">Schema đầu vào Journey</h2>
+          <p class="card__hint">Các trường lấy từ nguồn đầu vào của Journey. Custom Activity chỉ đọc metadata, không bao giờ đọc dòng dữ liệu trong Data Extension.</p>
+        </header>
+        <div id="schema-status" class="schema-status-region" aria-live="polite">
+          <p class="placeholder placeholder--compact">Đang chờ Journey Builder...</p>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="template-metadata-heading">
+        <header class="card__header">
+          <h2 id="template-metadata-heading" class="card__title">Thông tin mẫu</h2>
+        </header>
+        <div id="template-details" class="card__body" aria-live="polite">
+          <p class="placeholder">Đang tải chi tiết mẫu...</p>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="template-preview-heading">
+        <header class="card__header">
+          <h2 id="template-preview-heading" class="card__title">Xem trước mẫu</h2>
+          <p class="card__hint">Nội dung tin nhắn như khách hàng sẽ thấy. Các biến được tô sáng cho biết giá trị đã ánh xạ xuất hiện ở đâu.</p>
+        </header>
+        <div id="template-preview" class="card__body" aria-live="polite">
+          <p class="placeholder">Chọn một mẫu để xem nội dung xem trước.</p>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="mapping-targets-heading">
+        <header class="card__header">
+          <h2 id="mapping-targets-heading" class="card__title">Đích ánh xạ động</h2>
+          <p class="card__hint">Ánh xạ mỗi trường của mẫu với một trường Data Extension. Các dòng đã ánh xạ tự động được tô sáng; chọn trường khác để ghi đè.</p>
+        </header>
+
+        <div id="mapping-summary" class="mapping-summary-region" aria-live="polite"></div>
+
+        <div id="mapping-filter" class="mapping-filter-region"></div>
+
+        <div class="mapping-table-scroll" tabindex="0" aria-label="Bảng ánh xạ, có thể cuộn">
+          <table class="mapping-table" aria-describedby="mapping-targets-heading">
+            <caption class="sr-only">Ánh xạ từ trường của mẫu sang trường Data Extension</caption>
+            <thead>
+              <tr>
+                <th scope="col">
+                  <button type="button" class="sort-btn" data-sort="type">Loại</button>
+                </th>
+                <th scope="col">
+                  <button type="button" class="sort-btn" data-sort="name">Trường mẫu</button>
+                </th>
+                <th scope="col">
+                  <button type="button" class="sort-btn" data-sort="required">Bắt buộc</button>
+                </th>
+                <th scope="col">Trường DE đầu vào</th>
+                <th scope="col">
+                  <button type="button" class="sort-btn" data-sort="status">Trạng thái</button>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="mapping-table-body">
+              <tr class="mapping-table__empty">
+                <td colspan="5">Chọn một mẫu để xem các đích ánh xạ.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="validation-heading">
+        <header class="card__header">
+          <h2 id="validation-heading" class="card__title">Trạng thái kiểm tra</h2>
+        </header>
+        <div id="validation-panel" class="validation-region" aria-live="polite">
+          <p class="placeholder placeholder--compact">Việc kiểm tra được thực hiện sau khi chọn mẫu.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span>Cấu hình được lưu trong định nghĩa activity của Journey Builder. Giá trị trường được Journey Builder xử lý khi thực thi.</span>
+    </footer>
+
+    <dialog id="template-change-dialog" class="dialog" aria-labelledby="template-change-title" aria-describedby="template-change-body">
+      <h2 id="template-change-title" class="dialog__title">Đổi mẫu?</h2>
+      <p id="template-change-body" class="dialog__body">Đổi mẫu sẽ xóa các ánh xạ hiện có.</p>
+      <div class="dialog__actions">
+        <button type="button" id="template-change-cancel" class="button button--secondary">Hủy</button>
+        <button type="button" id="template-change-continue" class="button button--primary">Tiếp tục</button>
+      </div>
+    </dialog>
+
+    <dialog id="channel-change-dialog" class="dialog" aria-labelledby="channel-change-title" aria-describedby="channel-change-body">
+      <h2 id="channel-change-title" class="dialog__title">Đổi kênh?</h2>
+      <div id="channel-change-body" class="dialog__body">
+        <p>Đổi kênh sẽ xóa:</p>
+        <ul>
+          <li>Mẫu đã chọn</li>
+          <li>Các ánh xạ</li>
+        </ul>
+        <p>Bạn có muốn tiếp tục không?</p>
+      </div>
+      <div class="dialog__actions">
+        <button type="button" id="channel-change-cancel" class="button button--secondary">Hủy</button>
+        <button type="button" id="channel-change-continue" class="button button--primary">Tiếp tục</button>
+      </div>
+    </dialog>
+
+    <noscript>
+      <p class="app-noscript">Custom Activity này yêu cầu bật JavaScript.</p>
+    </noscript>
+
+    <script src="js/vendor/postmonger.js"></script>
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>

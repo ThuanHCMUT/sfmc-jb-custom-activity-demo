@@ -1,0 +1,338 @@
+{
+  "items": [
+    {
+      "templateKey": "vac.service-change-notice.sms.988dfeff",
+      "displayName": "Vaccine Service Change SMS",
+      "channel": "SMS",
+      "version": 1,
+      "content": "Thông báo: lịch tiêm {diseaseName} tại {shopName} đã được thay đổi. Ngày tiêm mới: {appointmentDate}. Người tiến hành: {vaccinator}. Địa điểm mới: {replacementShopName} ({operatingHours}).",
+      "addresses": [
+        {
+          "name": "phone",
+          "required": true,
+          "type": "phone"
+        }
+      ],
+      "recipientFields": [
+        {
+          "name": "customerId",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "params": [
+        {
+          "name": "vaccinator",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "diseaseName",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "appointmentDate",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "replacementShopName",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "operatingHours",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "shopName",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "templateKey": "vac.reminder.sms",
+      "displayName": "Vaccine Appointment Reminder SMS",
+      "channel": "SMS",
+      "version": 1,
+      "content": "Nhắc lịch: {customerName} thân mến, bạn có lịch tiêm vào ngày {appointmentDate} tại {shopName}. Vui lòng đến đúng giờ và mang theo giấy tờ tùy thân.",
+      "addresses": [
+        {
+          "name": "phone",
+          "required": true,
+          "type": "phone"
+        }
+      ],
+      "recipientFields": [
+        {
+          "name": "customerId",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "params": [
+        {
+          "name": "customerName",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "appointmentDate",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "shopName",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "templateKey": "chat.order.confirm",
+      "displayName": "Order Confirmation ChatApp",
+      "channel": "CHATAPP",
+      "version": 1,
+      "content": "Chào {customerName}, đơn hàng {orderCode} của bạn đã được xác nhận với tổng giá trị {amount} VND. Cảm ơn bạn đã mua sắm tại cửa hàng.",
+      "addresses": [
+        {
+          "name": "phone",
+          "required": true,
+          "type": "phone"
+        }
+      ],
+      "recipientFields": [
+        {
+          "name": "customerId",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "params": [
+        {
+          "name": "customerName",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "orderCode",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "amount",
+          "required": true,
+          "type": "number"
+        }
+      ]
+    },
+    {
+      "templateKey": "chat.order.cancel",
+      "displayName": "Order Cancellation ChatApp",
+      "channel": "CHATAPP",
+      "version": 1,
+      "content": "Chào {customerName}, đơn hàng {orderCode} của bạn đã bị hủy. Lý do: {cancelReason}. Nếu cần hỗ trợ, vui lòng liên hệ bộ phận chăm sóc khách hàng.",
+      "addresses": [
+        {
+          "name": "phone",
+          "required": true,
+          "type": "phone"
+        }
+      ],
+      "recipientFields": [
+        {
+          "name": "customerId",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "params": [
+        {
+          "name": "customerName",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "orderCode",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "cancelReason",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "templateKey": "fptlc.order-confirm.zns.6a12eabf",
+      "displayName": "Order Confirmation ZNS",
+      "channel": "ZNS",
+      "version": 1,
+      "content": "{customerName} thân mến, cảm ơn bạn đã đặt hàng tại {shopName}. Mã đơn: {shortOrderCode}. Giá trị đơn: {amount} VND. Ngày mua: {purchaseDate}. Thời gian giao dự kiến: {estimateDeliveryTime}. Mã khách hàng: {customerID}.",
+      "addresses": [
+        {
+          "name": "phone",
+          "required": true,
+          "type": "phone"
+        }
+      ],
+      "recipientFields": [
+        {
+          "name": "customerId",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "params": [
+        {
+          "name": "customerName",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "customerID",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "shopName",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "amount",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "estimateDeliveryTime",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "purchaseDate",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "shortOrderCode",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "token",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "templateKey": "vac.appointment.zns",
+      "displayName": "Vaccine Appointment Confirmation ZNS",
+      "channel": "ZNS",
+      "version": 1,
+      "content": "{customerName} thân mến, lịch tiêm của bạn tại {shopName} vào ngày {appointmentDate} đã được xác nhận. Vui lòng đến trước 15 phút.",
+      "addresses": [
+        {
+          "name": "phone",
+          "required": true,
+          "type": "phone"
+        }
+      ],
+      "recipientFields": [
+        {
+          "name": "customerId",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "params": [
+        {
+          "name": "customerName",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "appointmentDate",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "shopName",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "templateKey": "brc.account.created.zalo",
+      "displayName": "BRC Account Created",
+      "channel": "BRC_ZALO",
+      "version": 1,
+      "content": "Chào mừng {customerName}! Tài khoản {accountNumber} của bạn đã được tạo thành công. Hãy đăng nhập để bắt đầu sử dụng dịch vụ.",
+      "addresses": [
+        {
+          "name": "phone",
+          "required": true,
+          "type": "phone"
+        }
+      ],
+      "recipientFields": [
+        {
+          "name": "customerId",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "params": [
+        {
+          "name": "customerName",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "accountNumber",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "templateKey": "brc.account.warning.zalo",
+      "displayName": "BRC Account Warning",
+      "channel": "BRC_ZALO",
+      "version": 1,
+      "content": "Cảnh báo: {customerName} thân mến, {warningMessage}. Vui lòng kiểm tra tài khoản của bạn và liên hệ hotline nếu cần hỗ trợ.",
+      "addresses": [
+        {
+          "name": "phone",
+          "required": true,
+          "type": "phone"
+        }
+      ],
+      "recipientFields": [
+        {
+          "name": "customerId",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "params": [
+        {
+          "name": "customerName",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "warningMessage",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}
